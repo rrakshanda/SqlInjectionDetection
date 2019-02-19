@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+        <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
+        <script type=text/javascript>
+            $(function() {
+                
+              console.log("JQuery Running");
+            });
+        </script>
+        <style>
+            #div1{
+                width:60%;
+                margin:0 auto;
+            }
+        </style>
+    </head>
+
+    <body class="container">
+        
+        <div id="div1" >
+            <h2>Login Info</h2>
+            <form action="processLogin" method="get">
+              <div class="form-group">
+                <label for="userid">User ID</label>
+                <input type="text" class="form-control" id="userid" name="userid" aria-describedby="emailHelp" placeholder="Enter Userid" required>
+                
+              </div>
+              <div class="form-group">
+                <label for="pwd">Password</label>
+                <input type="password" class="form-control" id="pwd" name="pwd" placeholder="Password" required>
+              </div>
+              
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+    </body>
+
+</html>

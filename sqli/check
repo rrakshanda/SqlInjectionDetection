@@ -1,0 +1,85 @@
+import random as rd
+
+# Example Grammar rules
+rules = {
+    "S":[
+        ["booleanAttack"],
+        ],
+    "booleanAttack":[
+        ["orAttack"]
+     ],
+    "orAttack":[
+        ["opOr", "booleanTrueExpr"]
+    ],
+    "opOr": [
+        ["or"],
+        ["||"]
+    ],
+    "booleanTrueExpr": [
+        ["unaryTrue"],
+        ],
+    "unaryTrue": [
+        ["wsp","trueAtom"]
+    ],
+    "wsp": [
+        []
+    ],
+    "trueAtom": [
+        ["trueConst"],
+        ["terDigitOne"]
+    ],
+    "trueConst": [
+        ["true"]
+    ],
+    "terDigitOne": [
+        ["1","=","1"]
+    ]
+
+}
+
+# Contributed by Tiger Sachase
+# Used to parse any list of strings and insert them in place in a list
+def generate_items(items):
+    for item in items:
+        print("item index:",item)
+        if isinstance(item, list):
+            for subitem in generate_items(item):
+                print("subitem:",subitem)
+                yield subitem
+        else:
+            print("item:",item)
+            yield item
+
+def expansion(start):
+    for element in start:
+        print("element:",element)
+        if element in rules:
+            loc = start.index(element)
+            start[loc] = rd.choice(rules[element])
+            print("start:",start[loc])
+        result = [item for item in generate_items(start)]
+        print("result:",result)
+
+    for item in result:
+        if not isinstance(item, list):
+            if item in rules:
+                result = expansion(result)
+
+    return result
+
+
+def to_string(result):
+    return ' '.join(result)
+final=[]
+for i in range(0,2):
+    # An example test you can run to see it at work
+    result = ["S"]
+    # print(result) # Print our starting result
+    result = expansion(result) # Expand our starting list
+    final.append(to_string(result))
+print(final)
+x='or true'
+if x in final:
+    print('found')
+else:
+    print('not found')# Print the final result
