@@ -15,6 +15,7 @@ stop = set(stopwords.words('english'))
 stop.remove(('or'))
 stop.remove(('from'))
 stop.remove(('into'))
+stop.remove(('where'))
 exclude = set(string.punctuation)
 lemma = WordNetLemmatizer()
 
@@ -46,21 +47,20 @@ X = vectorizer.fit_transform(train_clean_sentences)
 
 # Creating true labels for 30 training sentences
 y_train = np.zeros(30)
-y_train[10:20] = 1
-y_train[20:30] = 2
+y_train[10:30] = 1
 
 # Clustering the document with KNN classifier
 modelknn = KNeighborsClassifier(n_neighbors=5)
 modelknn.fit(X,y_train)
 
 # Clustering the training 30 sentences with K-means technique
-modelkmeans = KMeans(n_clusters=3, init='k-means++', max_iter=200, n_init=100)
+modelkmeans = KMeans(n_clusters=2, init='k-means++', max_iter=200, n_init=100)
 modelkmeans.fit(X)
 
 
-test_sentences = ["or 1000=1000", \
-                  "union select from", \
-                  "pass"]
+test_sentences = ["'abc'='abc'--", \
+                  "table test", \
+                  "union insert into"]
 
 test_clean_sentence = []
 for test in test_sentences:
@@ -71,21 +71,11 @@ for test in test_sentences:
 
 Test = vectorizer.transform(test_clean_sentence)
 
-true_test_labels = ['or 2','password','union select from']
-predicted_labels_knn = modelknn.predict(Test)
 predicted_labels_kmeans = modelkmeans.predict(Test)
-
-print("\nBelow 3 sentences will be predicted against the learned nieghbourhood and learned clusters:\n1. ",
-      test_sentences[0], "\n2. ", test_sentences[1], "\n3. ", test_sentences[2])
-print("\n-------------------------------PREDICTIONS BY KNN------------------------------------------")
-print("\n", test_sentences[0], ":", true_test_labels[np.int(predicted_labels_knn[0])],
-      "\n", test_sentences[1], ":", true_test_labels[np.int(predicted_labels_knn[1])],
-      "\n", test_sentences[2], ":", true_test_labels[np.int(predicted_labels_knn[2])])
 
 print("\n-------------------------------PREDICTIONS BY K-Means--------------------------------------")
 print("\nIndex of bool cluster : ", Counter(modelkmeans.labels_[0:10]).most_common(1)[0][0])
-print("Index of boole Intelligence cluster : ", Counter(modelkmeans.labels_[10:20]).most_common(1)[0][0])
-print("Index of union cluster : ", Counter(modelkmeans.labels_[20:30]).most_common(1)[0][0])
+print("Index of union cluster : ", Counter(modelkmeans.labels_[10:30]).most_common(1)[0][0])
 
 print("\n", test_sentences[0], ":", predicted_labels_kmeans[0],
       "\n", test_sentences[1], ":", predicted_labels_kmeans[1],

@@ -1,40 +1,30 @@
-or
-or
-or
-or
-or
-or
-or
-or
-or
-or
-rishi
-pass code word
-user pass value
-code pass word
-value values code codes
-passwords passcode
-pass code word
-password value pass
-value word name answer
-password value pass
-union select from
-union insert into
-union drop
-union insert into
-union update
-union modify
-union select from
-union insert into
-union modify
-union select from
-dsfafdsfsfd sdflgndnsflkgs fdgsdfgdfg
-sdfddfdsadfsd gdskdfhghlkdjg  lkasjlkgsjdflsda
-asdfsdgdafghrgj jahfsdf j kfjasdajhfkjs dakfkjdfhhf askdjh fksjdaahfkjds dsa
-rgjgkrbfdbd kajfjlksadjf  sakjf fsjhfsaldk kjflkdas fksdlf sokj jafads
-kydfdfggfg hslkaj kfjkhsjadf sadkjj flkdsa fkjsadlklf aslf kjlkafd lkjasdlk
-hgsjdfkajdsfa kjsahfkak kfkdfasf  lkasajlkasd kfjdla kjajlsdk ffkjlasd kj lksad
-kjasfksahfkdjs  akjfkasdj   c kajslkf dakljfj lkdsajlkf kadsjlfk j lakdsjfalk
-nsfksafjaddsfas jafslkjfldskl lkasdasjj ksdjaflka kdajfak jflakds
-dslfkkjjsasd ojasf jk lkdsfjjas kasdjff asdkjsjsd
-asfsfsdadsagdg sskjfjlksd lfkjafalk kfj jsdlkfja lkjd lkaf lksadjlk
+or 123=123
+or '@@'='@@'
+or 'rishi'='rishi'
+or '::'='::'
+or '#$%'='#$%'
+or '98654'='98654'
+or '  '='  ''
+or 18790=18790
+or '!@#$%^&*9'='!@#$%^&*9'
+or 1234567890=1234567890
+drop truncate delete insert from where select into drop where
+union select insert union where select from drop select where insert drop into from delete
+union modify drop select union from select into insert drop truncate
+select union where from insert into drop truncate where union delete select from insert drop
+union  where select insert drop truncate delete union where truncate delete select from
+select union where drop truncate delete from where insert select into delete where
+union select where from delete truncate drop where insert into select from
+select from insert into delete where drop select union delete where truncate
+union select where from insert into drop where delete truncate from into
+select from insert where into drop delete where truncate
+union select where from insert into where drop insert drop into where insert from insert
+union insert into where select from select where insert into drop insert into drop
+union drop where select from select insert into select where insert into drop insert
+union insert into where select from select into select from where insert into drop from
+union where update from select where insert select from drop where select insert drop into from
+union modify where drop select from select where into insert from where select insert drop from
+union select where from insert into select from select drop insert select where insert from into
+union insert where into select from select insert into select insert drop insert from inot
+union modify select from select insert drop select from drop insert from into drop
+union select from select from select select insert from into drop  insert into

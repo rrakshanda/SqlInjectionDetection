@@ -1,97 +1,94 @@
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.cluster import KMeans
-from nltk.corpus import stopwords
 import nltk
-from nltk.stem.wordnet import WordNetLemmatizer
-import string
-import re
-import numpy as np
-from collections import Counter
+from nltk.corpus import stopwords
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.cluster import KMeans
+from sklearn.metrics import adjusted_rand_score
 nltk.download('stopwords')
-nltk.download('wordnet')
 
+documents = ["or 123=123",
+             "or '@@'='@@'",
+             "or 'rishi'='rishi'",
+             "or '::'='::'",
+             "or '#$%'='#$%'",
+             "or '98654'='98654'",
+             "or '  '='  ''",
+             "or 18790=18790",
+             "or '!@#$%^&*9'='!@#$%^&*9'",
+             "or 1234567890=1234567890",
+             "drop truncate delete insert from where select into drop where",
+             "union select insert union where select from drop select where insert drop into from delete",
+             "union modify drop select union from select into insert drop truncate ",
+             "union select union where from insert into drop truncate where union delete select from insert drop",
+             "union  where select insert drop truncate delete union where truncate delete select from",
+             "union select union where drop truncate delete from where insert select into delete where",
+             "union select where from delete truncate drop where insert into select from",
+             "select from insert into delete where drop select union delete where truncate",
+             "union select where from insert into drop where delete truncate from into",
+             "select from insert where into drop delete where truncate",
+             "union select where from insert into where drop insert drop into where insert from insert",
+             "union insert into where select from select where insert into drop insert into drop",
+             "union drop where select from select insert into select where insert into drop insert",
+             "union insert into where select from select into select from where insert into drop from",
+             "union where update from select where insert select from drop where select insert drop into from",
+             "union modify where drop select from select where into insert from where select insert drop from",
+             "union select where from insert into select from select drop insert select where insert from into",
+             "union insert where into select from select insert into select insert drop insert from inot",
+             "union modify select from select insert drop select from drop insert from into drop",
+             "union select from select from select select insert from into drop  insert into"
+             ]
 stop = set(stopwords.words('english'))
 stop.remove(('or'))
 stop.remove(('from'))
 stop.remove(('into'))
 stop.remove(('where'))
-exclude = set(string.punctuation)
-lemma = WordNetLemmatizer()
+vectorizer = TfidfVectorizer(stop)
+X = vectorizer.fit_transform(documents)
 
-# Cleaning the text sentences so that punctuation marks, stop words & digits are removed
-def clean(doc):
-    stop_free = " ".join([i for i in doc.lower().split() if i not in stop])
-    # punc_free = ''.join(ch for ch in stop_free if ch not in exclude)
-    normalized = " ".join(lemma.lemmatize(word) for word in stop_free.split())
-    # processed = re.sub(r"\d+","",normalized)
-    y = normalized.split()
-    print(y)
-    return y
+true_k = 2
+model = KMeans(n_clusters=true_k, init='k-means++', max_iter=300, n_init=1)
+model.fit(X)
 
+print("Top terms per cluster:")
+order_centroids = model.cluster_centers_.argsort()[:, ::-1]
+terms = vectorizer.get_feature_names()
+for i in range(true_k):
+    print("Cluster %d:" % i),
+    for ind in order_centroids[i, :10]:
+        print(' %s' % terms[ind]),
+    print
 
-print("There are 10 sentences of following three classes on which K-NN classification and K-means clustering"
-      " is performed : \n1. Cricket \n2. Artificial Intelligence \n3. Chemistry")
-path = "Sentences.txt"
-
-train_clean_sentences = []
-fp = open(path,'r')
-for line in fp:
-    line = line.strip()
-    cleaned = clean(line)
-    cleaned = ' '.join(cleaned)
-    train_clean_sentences.append(cleaned)
-
-vectorizer = TfidfVectorizer(stop_words='english')
-X = vectorizer.fit_transform(train_clean_sentences)
-
-# Creating true labels for 30 training sentences
-y_train = np.zeros(40)
-y_train[10:20] = 1
-y_train[20:30] = 2
-y_train[30:40] = 3
-# Clustering the document with KNN classifier
-modelknn = KNeighborsClassifier(n_neighbors=5)
-modelknn.fit(X,y_train)
-
-# Clustering the training 30 sentences with K-means technique
-modelkmeans = KMeans(n_clusters=4, init='k-means++', max_iter=500, n_init=100)
-modelkmeans.fit(X)
+print("\n")
+print("Prediction")
+first_test="union select from rishi where username=rak."
+Y = vectorizer.transform([first_test])
+prediction = model.predict(Y)
+if("union" in first_test):
+    print(first_test," :","union attack",prediction)
+elif("or" in first_test):
+    print(first_test," :","boolean attack",prediction)
+else:
+    print(first_test," :","piggy attack",prediction)
 
 
-test_sentences = ["or 1000=1000", \
-                  "union insert into", \
-                  "pass", \
-                  "asdfashkf"]
+second_test="or '#&'='#&'."
+Y = vectorizer.transform([second_test])
+prediction = model.predict(Y)
+prediction = model.predict(Y)
+if("union" in second_test):
+    print(second_test," :","union attack",prediction)
+elif("or" in second_test):
+    print(second_test," :","boolean attack",prediction)
+else:
+    print(second_test," :","piggy attack",prediction)
 
-test_clean_sentence = []
-for test in test_sentences:
-    cleaned_test = clean(test)
-    cleaned = ' '.join(cleaned_test)
-    # cleaned = re.sub(r"\d+","",cleaned)
-    test_clean_sentence.append(cleaned)
 
-Test = vectorizer.transform(test_clean_sentence)
-
-true_test_labels = ['or 2','password','union select from','adfadsfs']
-predicted_labels_knn = modelknn.predict(Test)
-print(predicted_labels_knn)
-predicted_labels_kmeans = modelkmeans.predict(Test)
-
-print("\nBelow 3 sentences will be predicted against the learned nieghbourhood and learned clusters:\n1. ",
-      test_sentences[0], "\n2. ", test_sentences[1], "\n3. ", test_sentences[2], "\n4. ",test_sentences[3])
-print("\n-------------------------------PREDICTIONS BY KNN------------------------------------------")
-print("\n", test_sentences[0], ":", true_test_labels[np.int(predicted_labels_knn[0])],
-      "\n", test_sentences[1], ":", true_test_labels[np.int(predicted_labels_knn[1])],
-      "\n", test_sentences[2], ":", true_test_labels[np.int(predicted_labels_knn[2])],
-      "\n", test_sentences[3], ":", true_test_labels[np.int(predicted_labels_knn[3])])
-
-print("\n-------------------------------PREDICTIONS BY K-Means--------------------------------------")
-print("\nIndex of bool cluster : ", Counter(modelkmeans.labels_[0:10]).most_common(1)[0][0])
-print("Index of normal cluster : ", Counter(modelkmeans.labels_[10:20]).most_common(1)[0][0])
-print("Index of union cluster : ", Counter(modelkmeans.labels_[20:30]).most_common(1)[0][0])
-print("Index of mix cluster : ", Counter(modelkmeans.labels_[30:40]).most_common(1)[0][0])
-print("\n", test_sentences[0], ":", predicted_labels_kmeans[0],
-      "\n", test_sentences[1], ":", predicted_labels_kmeans[1],
-      "\n", test_sentences[2], ":", predicted_labels_kmeans[2],
-      "\n", test_sentences[3], ":", predicted_labels_kmeans[3])
+third_test="insert into table"
+Y = vectorizer.transform([third_test])
+prediction = model.predict(Y)
+prediction = model.predict(Y)
+if("union" in third_test):
+    print(third_test," :","union attack",prediction)
+elif("or" in third_test):
+    print(third_test," :","boolean attack",prediction)
+else:
+    print(third_test," :","piggy attack",prediction)
